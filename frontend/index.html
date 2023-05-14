@@ -1,0 +1,132 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="styles/style.css"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>EcoEye</title>
+</head>
+<body>
+    <!--Navbar-->
+ 
+    <nav class="flex justify-between items-center sticky p-4">
+        <a href="#" class="logo"><img src="images\Eco _ Eye.png"  class="p-10 ..."><alt=""></a>
+        <ul class="flex items-center" class="p-10" class="font-bold"> 
+          <li><a href="#AI" class="p-5" ><button id="aiButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Our AI</button></a></li>
+          <li><a href="#AboutUs"><button id="aboutButton">About Us</button> </a></li>
+        </ul>
+    </nav>
+
+    <div class="text-center p-10">
+      <h3 class="font-bold text-4xl">Revolutionize waste management with EcoEye <span class="text-green-500">AI</span></h3>
+    </div>
+
+    <div class="text-center p-10 py- 4">
+      <h3 class="font-semibold text-2xl pb-10">Our Mission</h3>
+      <div class="flex flex-row align-center gap-3 items-center items-strech justify-center">
+        <div class="px-10 py-3 rounded w-full h-full">
+          <div class="flex flex-col items-center p-3">
+            <img class="max-w-max pb-4" src="images/search1653-t2mh-200h.png">
+            Uncover the full depth of the problem of  pollution
+          </div>
+        </div>
+        <div class="px-10 py-3 rounded w-full h-full">
+          <div class="flex flex-col items-center p-3">
+            <img class="max-w-max pb-4" src="images\megaphone1653-yuyl-200h.png">
+            Show young people how they can make the world cleaner and better
+          </div>
+        </div>
+        <div class="  px-10 py-3 rounded w-full h-full">
+          <div class="flex flex-col items-center p-3">
+            <img class="max-w-max pb-4" src="images\lightbulb1652-3vqn-200h.png">
+            Inspire people to do <br> good deeds
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="ai" class="text-center bg-green-200 min-h-screen flex flex-col align-middle justify-center items-center">
+      <div class="px-10 py-3 rounded w-full h-full">
+        <h2 class="font-bold text-2xl" class="">Input an image and ECOEYE AI will detect how many pieces of trash are in the media given</h2>
+      </div>  
+      <div class="flex flex-col items-center bg-white rounded-xl p-10 m-10">
+        <p class="font-semibold text-2xl py-5">Select Image Here</p>
+        <div class="flex flex-col justify-between items-center items-strech">
+          <div class="pb-4">
+            <input class="border border-gray-300 cursor-pointer rounded" type="file" id="file" name="imagefile" accept="image/*">
+
+          </div>
+          <button type="button" value="Upload" id="submit" class="bg-green-600 px-3 py-2 rounded text-white">Upload</button>
+        <p id="result" class="p-3">Result: <span id="output">No Image Selected</span></p>
+        </div>  
+      </div>
+    </div>
+
+    <div class="text-center" id="about" class="py-10">
+      <h2 class="font-bold text-4xl py-10" class="">About Us</h2>
+      <div class="flex flex-row text-center">
+        <div class="w-full">
+          <iframe class="p-5" width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" allowfullscreen></iframe>
+        </div>
+          <div class="w-full text-left pt-10 pb-10">
+            <p>
+              We are a team of Programmers from the city of <br>Brampton, united by our passion for hacking, as well as, unfortunately, one global problem - pollution of<br>  the world's oceans.
+              <br>
+              <br>
+              That is why we decided to make our hackathon topic <br> “ECOEYE” an AI which can detect the percentage trash in a PNG. 
+              <br>
+              <br>
+              We hope you find our AI helpful. Enjoy!
+              <br>
+              <br>
+              -- ECOEYE
+            </p>
+          </div>
+      </div>
+    </div>
+
+    </body>
+    <script>
+
+      document.getElementById("aiButton").addEventListener('click', () => {
+        document.getElementById('ai').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      });
+
+      document.getElementById("aboutButton").addEventListener('click', () => {
+        document.getElementById('about').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      });
+
+      document.getElementById("submit").addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        await submit();
+      });
+
+      async function submit() {
+        var input = document.querySelector('input[type="file"]');
+        var data = new FormData();
+        data.append('imagefile', input.files[0])
+        const response = await fetch('http://localhost:3000/detect', {
+          method: 'POST',
+          body: data,
+        }).then((response) => {
+          return response.json();
+        }).then((response) => {
+          const detections = response.detections;
+          const percentage = response.garbagePercentage;
+          document.getElementById("output").innerHTML = `Your input is ${percentage}% trash.`
+        })
+      }
+    </script>
+</body>
+</html>
+
+
+
